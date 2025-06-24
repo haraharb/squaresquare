@@ -41,16 +41,19 @@ canvas{display:none;margin-top:1.5rem;width:100%;height:auto;border:3px solid rg
 img#preview{display:none;margin-top:1.4rem;width:100%;height:auto;border:3px solid rgba(255,255,255,.8);border-radius:calc(var(--radius) - .25rem);box-shadow:0 4px 10px rgba(0,0,0,.12);} 
 @media(max-width:600px){img#preview{border-radius:.75rem;}}
 /* カラーピッカー */
-.color-picker{margin-top:1rem;text-align:center;font-size:.9rem;color:#fff;display:flex;justify-content:center;align-items:center;gap:.6rem;}
+.color-picker{margin:1rem auto .8rem;display:flex;justify-content:center;align-items:center;gap:.8rem;font-size:1rem;font-weight:600;color:#fff;}
+.color-picker input{width:48px;height:34px;border:none;border-radius:8px;cursor:pointer;}
+.cp-label{font-family:'Lilita One',cursive;letter-spacing:.5px;}
 .color-picker input{width:44px;height:30px;border:none;border-radius:6px;cursor:pointer;}
 </style>
 </head>
 <body>
 <div class="card">
   <h1>画像をスクエア化</h1>
-  <label class="color-picker">枠色:
+  <div class="color-picker">
+    <span class="cp-label">🎨 Color&nbsp;</span>
     <input type="color" id="borderColor" value="#ffffff">
-  </label>
+  </div>
   <label for="picker" class="custom-file" id="droparea">
     <span class="icon">📁✨</span>
     <span>画像をドロップ<br>またはクリックで選択</span>

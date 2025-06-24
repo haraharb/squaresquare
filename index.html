@@ -5,55 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Square Border Maker – Insta Pop</title>
   <link rel="manifest" href="manifest.json">
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('service-worker.js');
-      });
-    }
-  </script>
+  <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('service-worker.js'));}</script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Lilita+One&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --g1:#feda75;--g2:#fa7e1e;--g3:#d62976;--g4:#962fbf;--g5:#4f5bd5;
-      --bg:linear-gradient(135deg,var(--g1) 0%,var(--g2) 25%,var(--g3) 50%,var(--g4) 75%,var(--g5) 100%);
-      --grad:linear-gradient(90deg,var(--g1),var(--g2),var(--g3));
-      --hover:#d62976;--txt:#fff;--rad:1rem;--shadow:0 8px 24px rgba(0,0,0,.18);--glass:rgba(255,255,255,.32);
-    }
-    *{box-sizing:border-box;margin:0;padding:0;font-family:'Poppins','Noto Sans JP',sans-serif}
-    body{display:flex;justify-content:center;align-items:center;min-height:100vh;background:var(--bg);padding:1rem}
-    .card{width:100%;max-width:560px;padding:2rem 2.2rem;border-radius:var(--rad);background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:var(--shadow)}
-    @media(max-width:600px){.card{max-width:100%;padding:1.3rem}}
-    h1{font-family:'Lilita One',cursive;font-size:2rem;font-weight:400;text-align:center;margin-bottom:1.4rem;color:var(--txt);text-shadow:0 2px 4px rgba(0,0,0,.25)}
-    @media(max-width:600px){h1{font-size:1.6rem}}
-    /* color picker */
-    .color-picker{margin:0 auto 1.1rem;display:flex;justify-content:center;align-items:center;gap:.6rem;font-size:1rem;font-weight:600;color:var(--txt)}
-    .color-picker input{width:48px;height:34px;border:none;border-radius:8px;cursor:pointer}
-    .cp-label{font-family:'Lilita One',cursive;letter-spacing:.5px}
-    /* drop zone */
-    label.custom-file{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:.8rem;width:100%;padding:3.4rem 1rem;border-radius:calc(var(--rad) - .25rem);color:var(--txt);border:3px dashed rgba(255,255,255,.75);background:rgba(255,255,255,.25);transition:.35s;cursor:pointer;font-size:1.05rem;font-weight:600;text-shadow:0 1px 2px rgba(0,0,0,.25)}
-    label.custom-file .icon{font-size:2.3rem}
-    label.custom-file:hover,label.custom-file.dragover{border-color:var(--hover);background:rgba(255,255,255,.45);color:var(--hover)}
-    input[type=file]{display:none}
-    a.btn{display:block;margin-top:1.6rem;width:100%;padding:1rem;font-size:1.1rem;font-weight:600;text-align:center;color:#fff;border-radius:9999px;text-decoration:none;background:var(--grad);box-shadow:0 6px 16px rgba(0,0,0,.18);transition:transform .25s,filter .25s}
-    a.btn:hover:not(.disabled){filter:brightness(1.08);transform:translateY(-3px)}
-    a.btn.disabled{pointer-events:none;opacity:.55;filter:none}
-    canvas,img#preview{display:none;margin-top:1.4rem;width:100%;height:auto;border:3px solid rgba(255,255,255,.8);border-radius:calc(var(--rad) - .25rem);box-shadow:0 4px 10px rgba(0,0,0,.12)}
-    .progress{margin-top:1.1rem;font-size:.9rem;color:#fff;text-align:center;text-shadow:0 1px 2px rgba(0,0,0,.3);min-height:1.4em;font-family:'Lilita One',cursive}
-    .progress-wrapper{margin:.6rem auto 0;height:14px;background:rgba(255,255,255,.45);border-radius:9999px;overflow:hidden;display:none;width:80%}
-    .progress-bar{height:100%;width:0;background:var(--grad);transition:width .1s linear}
-    .spinner{margin:1.6rem auto 0;width:44px;height:44px;border:5px solid rgba(255,255,255,.6);border-top-color:var(--hover);border-radius:50%;animation:spin 1s linear infinite;display:none}
-    @keyframes spin{to{transform:rotate(360deg)}}
-  </style>
+  <style>:root{--g1:#feda75;--g2:#fa7e1e;--g3:#d62976;--g4:#962fbf;--g5:#4f5bd5;--bg:linear-gradient(135deg,var(--g1) 0%,var(--g2) 25%,var(--g3) 50%,var(--g4) 75%,var(--g5) 100%);--grad:linear-gradient(90deg,var(--g1),var(--g2),var(--g3));--hover:#d62976;--txt:#fff;--rad:1rem;--shadow:0 8px 24px rgba(0,0,0,.18);--glass:rgba(255,255,255,.32)}*{box-sizing:border-box;margin:0;padding:0;font-family:'Poppins','Noto Sans JP',sans-serif}body{display:flex;justify-content:center;align-items:center;min-height:100vh;background:var(--bg);padding:1rem}.card{width:100%;max-width:560px;padding:2rem 2.2rem;border-radius:var(--rad);background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:var(--shadow)}@media(max-width:600px){.card{max-width:100%;padding:1.3rem}}h1{font-family:'Lilita One',cursive;font-size:2rem;font-weight:400;text-align:center;margin-bottom:1.4rem;color:var(--txt);text-shadow:0 2px 4px rgba(0,0,0,.25)}@media(max-width:600px){h1{font-size:1.6rem}}.color-picker{margin:.2rem auto 1.1rem;display:flex;justify-content:center;align-items:center;gap:.6rem;font-size:1rem;font-weight:600;color:var(--txt)}.color-picker input{width:48px;height:34px;border:none;border-radius:8px;cursor:pointer}.cp-label{font-family:'Lilita One',cursive}.custom-file{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:.8rem;width:100%;padding:3.4rem 1rem;border-radius:calc(var(--rad) - .25rem);color:var(--txt);border:3px dashed rgba(255,255,255,.75);background:rgba(255,255,255,.25);transition:.35s;cursor:pointer;font-size:1.05rem;font-weight:600;text-shadow:0 1px 2px rgba(0,0,0,.25)}.custom-file .icon{font-size:2.3rem}.custom-file:hover,.custom-file.dragover{border-color:var(--hover);background:rgba(255,255,255,.45);color:var(--hover)}input[type=file]{display:none}.btn{display:block;margin-top:1.6rem;width:100%;padding:1rem;font-size:1.1rem;font-weight:600;text-align:center;color:#fff;border-radius:9999px;text-decoration:none;background:var(--grad);box-shadow:0 6px 16px rgba(0,0,0,.18);transition:transform .25s,filter .25s}.btn:hover:not(.disabled){filter:brightness(1.08);transform:translateY(-3px)}.btn.disabled{pointer-events:none;opacity:.55;filter:none}canvas,img#preview{display:none;margin-top:1.4rem;width:100%;height:auto;border:3px solid rgba(255,255,255,.8);border-radius:calc(var(--rad) - .25rem);box-shadow:0 4px 10px rgba(0,0,0,.12)}.progress{margin-top:1.1rem;font-size:.9rem;color:#fff;text-align:center;text-shadow:0 1px 2px rgba(0,0,0,.3);min-height:1.4em;font-family:'Lilita One',cursive}.progress-wrapper{margin:.6rem auto 0;height:14px;background:rgba(255,255,255,.45);border-radius:9999px;overflow:hidden;display:none;width:80%}.progress-bar{height:100%;width:0;background:var(--grad);transition:width .1s linear}.spinner{margin:1.6rem auto 0;width:44px;height:44px;border:5px solid rgba(255,255,255,.6);border-top-color:var(--hover);border-radius:50%;animation:spin 1s linear infinite;display:none}@keyframes spin{to{transform:rotate(360deg)}}</style>
 </head>
 <body>
   <div class="card">
     <h1>画像をスクエア化</h1>
     <div class="color-picker"><span class="cp-label">🎨 Color</span><input type="color" id="borderColor" value="#ffffff"></div>
-    <label for="picker" class="custom-file" id="droparea">
-      <span class="icon">📁✨</span>
-      <span>画像をドロップ<br>またはクリックで選択</span>
-    </label>
+    <label for="picker" class="custom-file" id="droparea"><span class="icon">📁✨</span><span>画像をドロップ<br>またはクリックで選択</span></label>
     <input type="file" id="picker" accept="image/*" multiple>
     <canvas id="c"></canvas>
     <img id="preview" alt="preview">
@@ -62,17 +22,20 @@
     <div class="progress-wrapper" id="progressWrapper"><div class="progress-bar" id="bar"></div></div>
     <div class="spinner" id="spinner"></div>
   </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" crossorigin="anonymous"></script>
-  <script>
-    // element refs
-    const picker=document.getElementById('picker'),drop= document.getElementById('droparea'),dl=document.getElementById('download'),status=document.getElementById('status'),wrap=document.getElementById('progressWrapper'),bar=document.getElementById('bar'),spin=document.getElementById('spinner'),canvas=document.getElementById('c'),ctx=canvas.getContext('2d'),preview=document.getElementById('preview'),color=document.getElementById('borderColor');
-    // constants
-    const MB=60,MAX=2000,isM=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    // helpers
-    const enable=(u,f)=>{dl.href=u;dl.download=f;dl.classList.remove('disabled')},disable=()=>{dl.removeAttribute('href');dl.classList.add('disabled')};
-    const load=f=>new Promise((ok,no)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=no;i.src=URL.createObjectURL(f)});
-    function toSquare(i){let{width:w,height:h}=i;if(Math.max(w,h)>MAX){const s=MAX/Math.max(w,h);w=Math.round(w*s);h=Math.round(h*s);}const S=Math.max(w,h)+MB*2;canvas.width=canvas.height=S;ctx.fillStyle=color.value;ctx.fillRect(0,0,S,S);ctx.drawImage(i,(S-w)/2,(S-h)/2,w,h);return new Promise(r=>canvas.toBlob(r,'image/png'));}
-    async function run(files){if(!files.length)return;disable();status.textContent='処理中…';bar.style.width='0%';wrap.style.display=files.length>1?'block':'none';spin.style.display='none';canvas.style.display='none';preview.style.display='none';
-      if(files.length===1){try{const img=await load(files[0]),blob=await toSquare(img),url=URL.createObjectURL(blob);if(isM){preview.src=url;preview.style.display='block';status.textContent='画像を長押しして保存してください。';}else{canvas.style.display='block';enable(url,'square.png');status.textContent='完了！PNG をダウンロードできます';}}catch(e){console.error(e);status.textContent='エラーが発生しました';}return;}
-      // multiple → zip
-      const zip=new JSZip();let done=0;for(const f of files){try{const i=await load(f),b=await toSquare(i);zip.file(f.name.replace(/\.[^.]+$/,'')+'.png',b,{compression:'STORE'});}catch(err){console.error('失敗',f.name,err);}done++;bar.style.width=`${(done/files.length)*100}%`;status.textContent=`${done}/${files.length} 枚完了`;await new Promise(r=>set
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const picker=$("picker"),drop=$("droparea"),dl=$("download"),status=$("status"),wrap=$("progressWrapper"),bar=$("bar"),spin=$("spinner"),canvas=$("c"),ctx=canvas.getContext("2d"),preview=$("preview"),color=$("borderColor"),isM=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+const MIN=60,MAX=2000;
+const enable=(u,f)=>{dl.href=u;dl.download=f;dl.classList.remove("disabled")},disable=()=>{dl.removeAttribute("href");dl.classList.add("disabled")};
+const load=f=>new Promise((ok,no)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=no;i.src=URL.createObjectURL(f)});
+function square(i){let{width:w,height:h}=i;if(Math.max(w,h)>MAX){const s=MAX/Math.max(w,h);w=Math.round(w*s);h=Math.round(h*s);}const S=Math.max(w,h)+MIN*2;canvas.width=canvas.height=S;ctx.fillStyle=color.value;ctx.fillRect(0,0,S,S);ctx.drawImage(i,(S-w)/2,(S-h)/2,w,h);return new Promise(r=>canvas.toBlob(r,"image/png"));}
+async function run(files){if(!files.length)return;disable();status.textContent="処理中…";bar.style.width="0%";wrap.style.display=files.length>1?"block":"none";spin.style.display="none";canvas.style.display="none";preview.style.display="none";
+ if(files.length===1){try{const img=await load(files[0]);const blob=await square(img);const url=URL.createObjectURL(blob);if(isM){preview.src=url;preview.style.display="block";status.textContent="画像を長押しして保存してください。";}else{canvas.style.display="block";enable(url,"square.png");status.textContent="完了！PNG をダウンロードできます";}}catch(e){console.error(e);status.textContent="エラーが発生しました";}return;}
+ const zip=new JSZip();let done=0;for(const f of files){try{const img=await load(f);const b=await square(img);zip.file(f.name.replace(/\.[^.]+$/,'')+".png",b,{compression:"STORE"});}catch(err){console.error(err);}done++;bar.style.width=`${(done/files.length)*100}%`;status.textContent=`${done}/${files.length} 枚完了`;await new Promise(r=>setTimeout(r));}
+ status.textContent="ZIP を生成中…";wrap.style.display="none";spin.style.display="block";const blob=await zip.generateAsync({type:"blob",compression:"STORE"});enable(URL.createObjectURL(blob),"square-images.zip");spin.style.display="none";wrap.style.display="block";bar.style.width="100%";status.textContent="完了！ZIP をダウンロードできます"; }
+
+picker.addEventListener("change",e=>run([...e.target.files]));
+["dragenter","dragover"].forEach(evt=>drop.addEventListener(evt,e=>{e.preventDefault();drop.classList.add("dragover")}));
+["dragleave","drop"].forEach(evt=>drop.addEventListener(evt,e=>{e.preventDefault();drop.classList.remove("dragover")}));
+drop.addEventListener("

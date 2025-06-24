@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="utf-8" />
@@ -39,6 +39,11 @@ canvas{display:none;margin-top:1.5rem;width:100%;height:auto;border:3px solid rg
 .spinner{margin:1.8rem auto 0;width:44px;height:44px;border:5px solid rgba(255,255,255,.6);border-top-color:var(--accent-hover);border-radius:50%;animation:spin 1s linear infinite;display:none;}
 @keyframes spin{to{transform:rotate(360deg);}}
 </style>
+<style>
+/* モバイルの保存用プレビュー画像 */
+img#preview{display:none;margin-top:1.4rem;width:100%;height:auto;border:3px solid rgba(255,255,255,.8);border-radius:calc(var(--radius) - .25rem);box-shadow:0 4px 10px rgba(0,0,0,.12);} 
+@media(max-width:600px){img#preview{border-radius:.75rem;}}
+</style>
 </head>
 <body>
 <div class="card">
@@ -49,6 +54,7 @@ canvas{display:none;margin-top:1.5rem;width:100%;height:auto;border:3px solid rg
   </label>
   <input type="file" id="picker" accept="image/*" multiple>
   <canvas id="c"></canvas>
+  <img id="preview" alt="preview">
   <a id="download" class="btn disabled">ダウンロード</a>
   <div class="progress" id="status">ファイルが選択されていません</div>
   <div class="progress-wrapper" id="progressWrapper"><div class="progress-bar" id="bar"></div></div>
@@ -65,9 +71,11 @@ function squareBlob(i){let{width:w,height:h}=i;if(Math.max(w,h)>MAX_DIM){const s
 async function processFiles(files){if(!files.length)return;disableDownload();const t=files.length;status.textContent='処理中…';bar.style.width='0%';wrapper.style.display=t>1?'block':'none';spinner.style.display='none';canvas.style.display='none';
 if(t===1){try{const img=await loadImage(files[0]);const blob=await squareBlob(img);const url=URL.createObjectURL(blob);
   if(isMobile){
-      // モバイル：新しいタブで画像を開き、長押し保存してもらう
-      window.open(url,'_blank');
-      status.textContent='画像が新しいタブに開きました。長押しして保存してください。';
+      // モバイル：同じ画面に画像要素を表示し、長押し保存してもらう
+      const imgEl=document.getElementById('preview');
+      imgEl.src=url; imgEl.style.display='block'; dl.classList.add('disabled');
+      status.textContent='画像を長押しして保存してください。';
+      canvas.style.display='none';
   }else{
       canvas.style.display='block';enableDownload(url,'square.png');status.textContent='完了！PNG をダウンロードできます';
   }

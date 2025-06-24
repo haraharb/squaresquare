@@ -1,10 +1,9 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Square Border Maker – Insta Pop v3</title>
-<!-- PWA manifest & service worker -->
 <link rel="manifest" href="manifest.json">
 <script>
   if('serviceWorker' in navigator){
@@ -18,7 +17,6 @@
 <style>
 :root{
   --g1:#feda75;--g2:#fa7e1e;--g3:#d62976;--g4:#962fbf;--g5:#4f5bd5;
-  /* static rainbow gradient (no animation) */
   --bg-gradient:linear-gradient(135deg,var(--g1) 0%,var(--g2) 25%,var(--g3) 50%,var(--g4) 75%,var(--g5) 100%);
   --accent-gradient:linear-gradient(90deg,var(--g1),var(--g2),var(--g3));
   --accent-hover:#d62976;--text-main:#ffffff;--radius:1rem;--shadow:0 8px 24px rgba(0,0,0,.18);--glass:rgba(255,255,255,.3);
@@ -26,11 +24,12 @@
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Poppins','Noto Sans JP',sans-serif;}
 body{display:flex;justify-content:center;align-items:center;min-height:100vh;background:var(--bg-gradient);padding:1rem;}
 .card{width:100%;max-width:560px;padding:2rem 2.2rem;border-radius:var(--radius);background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:var(--shadow);} 
-/* heading with pop font & solid color */
+@media(max-width:600px){.card{max-width:100%;padding:1.3rem;}}
+/* heading */
 h1{font-family:'Lilita One',cursive;font-size:2rem;font-weight:400;text-align:center;margin-bottom:1.6rem;color:#ffffff;text-shadow:0 2px 4px rgba(0,0,0,.25);} 
+@media(max-width:600px){h1{font-size:1.6rem;}}
 label.custom-file{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:.75rem;width:100%;padding:3.4rem 1rem;border-radius:calc(var(--radius) - .25rem);color:var(--text-main);border:3px dashed rgba(255,255,255,.75);background:rgba(255,255,255,.25);transition:all .35s;cursor:pointer;font-size:1.05rem;font-weight:600;text-shadow:0 1px 2px rgba(0,0,0,.25);} 
-label.custom-file .icon{font-size:2.3rem;}
-label.custom-file:hover,label.custom-file.dragover{border-color:var(--accent-hover);background:rgba(255,255,255,.45);color:var(--accent-hover);} 
+label.custom-file .icon{font-size:2.3rem;}label.custom-file:hover,label.custom-file.dragover{border-color:var(--accent-hover);background:rgba(255,255,255,.45);color:var(--accent-hover);} 
 input[type=file]{display:none;}
 a.btn{display:block;margin-top:1.6rem;width:100%;padding:1rem;font-size:1.1rem;font-weight:600;text-align:center;color:#fff;border-radius:9999px;text-decoration:none;background:var(--accent-gradient);box-shadow:0 6px 16px rgba(0,0,0,.18);transition:transform .25s,filter .25s;}a.btn:hover:not(.disabled){filter:brightness(1.08);transform:translateY(-3px);}a.btn.disabled{pointer-events:none;opacity:.55;filter:none;}
 canvas{display:none;margin-top:1.5rem;width:100%;height:auto;border:3px solid rgba(255,255,255,.8);border-radius:calc(var(--radius) - .25rem);box-shadow:0 4px 10px rgba(0,0,0,.12);} 
@@ -55,13 +54,32 @@ canvas{display:none;margin-top:1.5rem;width:100%;height:auto;border:3px solid rg
   <div class="progress-wrapper" id="progressWrapper"><div class="progress-bar" id="bar"></div></div>
   <div class="spinner" id="spinner"></div>
 </div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-/* JS (same as before) */
-const picker=document.getElementById('picker'),droparea=document.getElementById('droparea'),dl=document.getElementById('download'),status=document.getElementById('status'),wrapper=document.getElementById('progressWrapper'),bar=document.getElementById('bar'),spinner=document.getElementById('spinner'),canvas=document.getElementById('c'),ctx=canvas.getContext('2d');const MIN_BORDER=60,MAX_DIM=2000;function enableDownload(u,f){dl.href=u;dl.download=f;dl.classList.remove('disabled');}function disableDownload(){dl.removeAttribute('href');dl.classList.add('disabled');}function loadImage(f){return new Promise((r,j)=>{const i=new Image();i.onload=()=>r(i);i.onerror=j;i.src=URL.createObjectURL(f);});}function squareBlob(i){let{width:w,height:h}=i;if(Math.max(w,h)>MAX_DIM){const s=MAX_DIM/Math.max(w,h);w=Math.round(w*s);h=Math.round(h*s);}const S=Math.max(w,h)+MIN_BORDER*2;canvas.width=canvas.height=S;ctx.fillStyle='#fff';ctx.fillRect(0,0,S,S);ctx.drawImage(i,(S-w)/2,(S-h)/2,w,h);return new Promise(r=>canvas.toBlob(r,'image/png'));}
-async function processFiles(files){if(!files.length)return;disableDownload();const t=files.length;status.textContent='処理中…';bar.style.width='0%';wrapper.style.display=t>1?'block':'none';spinner.style.display='none';canvas.style.display='none';if(t===1){try{const i=await loadImage(files[0]);const b=await squareBlob(i);canvas.style.display='block';enableDownload(URL.createObjectURL(b),'square.png');status.textContent='完了！PNG をダウンロードできます';}catch(e){console.error(e);status.textContent='エラーが発生しました';}return;}const zip=new JSZip();let d=0;for(const f of files){try{const i=await loadImage(f);const b=await squareBlob(i);zip.file(f.name.replace(/\.[^.]+$/,'')+'.png',b,{compression:'STORE'});}catch(e){console.error('失敗',f.name,e);}d++;bar.style.width=`${(d/t)*100}%`;status.textContent=`${d}/${t} 枚完了`;await new Promise(r=>setTimeout(r));}status.textContent='ZIP を生成中…';wrapper.style.display='none';spinner.style.display='block';const zb=await zip.generateAsync({type:'blob',compression:'STORE'});enableDownload(URL.createObjectURL(zb),'square-images.zip');spinner.style.display='none';wrapper.style.display='block';bar.style.width='100%';status.textContent='完了！ZIP をダウンロードできます';}
-picker.addEventListener('change',e=>processFiles(Array.from(e.target.files)));['dragenter','dragover'].forEach(ev=>droparea.addEventListener(ev,e=>{e.preventDefault();droparea.classList.add('dragover');}));['dragleave','drop'].forEach(ev=>droparea.addEventListener(ev,e=>{e.preventDefault();droparea.classList.remove('dragover');}));droparea.addEventListener('drop',e=>{e.preventDefault();const files=Array.from(e.dataTransfer.files);picker.files=e.dataTransfer.files;processFiles(files)});
+const picker=document.getElementById('picker'),droparea=document.getElementById('droparea'),dl=document.getElementById('download'),status=document.getElementById('status'),wrapper=document.getElementById('progressWrapper'),bar=document.getElementById('bar'),spinner=document.getElementById('spinner'),canvas=document.getElementById('c'),ctx=canvas.getContext('2d');
+const MIN_BORDER=60,MAX_DIM=2000,isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+function enableDownload(u,f){dl.href=u;dl.download=f;dl.classList.remove('disabled');}
+function disableDownload(){dl.removeAttribute('href');dl.classList.add('disabled');}
+function loadImage(f){return new Promise((r,j)=>{const i=new Image();i.onload=()=>r(i);i.onerror=j;i.src=URL.createObjectURL(f);});}
+function squareBlob(i){let{width:w,height:h}=i;if(Math.max(w,h)>MAX_DIM){const s=MAX_DIM/Math.max(w,h);w=Math.round(w*s);h=Math.round(h*s);}const S=Math.max(w,h)+MIN_BORDER*2;canvas.width=canvas.height=S;ctx.fillStyle='#fff';ctx.fillRect(0,0,S,S);ctx.drawImage(i,(S-w)/2,(S-h)/2,w,h);return new Promise(r=>canvas.toBlob(r,'image/png'));}
+async function processFiles(files){if(!files.length)return;disableDownload();const t=files.length;status.textContent='処理中…';bar.style.width='0%';wrapper.style.display=t>1?'block':'none';spinner.style.display='none';canvas.style.display='none';
+if(t===1){try{const img=await loadImage(files[0]);const blob=await squareBlob(img);const url=URL.createObjectURL(blob);
+  if(isMobile){
+      // モバイル：新しいタブで画像を開き、長押し保存してもらう
+      window.open(url,'_blank');
+      status.textContent='画像が新しいタブに開きました。長押しして保存してください。';
+  }else{
+      canvas.style.display='block';enableDownload(url,'square.png');status.textContent='完了！PNG をダウンロードできます';
+  }
+}catch(e){console.error(e);status.textContent='エラーが発生しました';}
+return;}
+const zip=new JSZip();let d=0;for(const f of files){try{const i=await loadImage(f);const b=await squareBlob(i);zip.file(f.name.replace(/\.[^.]+$/,'')+'.png',b,{compression:'STORE'});}catch(e){console.error('失敗',f.name,e);}d++;bar.style.width=`${(d/t)*100}%`;status.textContent=`${d}/${t} 枚完了`;await new Promise(r=>setTimeout(r));}
+status.textContent='ZIP を生成中…';wrapper.style.display='none';spinner.style.display='block';const zb=await zip.generateAsync({type:'blob',compression:'STORE'});enableDownload(URL.createObjectURL(zb),'square-images.zip');spinner.style.display='none';wrapper.style.display='block';bar.style.width='100%';status.textContent='完了！ZIP をダウンロードできます';}
+
+picker.addEventListener('change',e=>processFiles(Array.from(e.target.files)));
+['dragenter','dragover'].forEach(ev=>droparea.addEventListener(ev,e=>{e.preventDefault();droparea.classList.add('dragover');}));
+['dragleave','drop'].forEach(ev=>droparea.addEventListener(ev,e=>{e.preventDefault();droparea.classList.remove('dragover');}));
+droparea.addEventListener('drop',e=>{e.preventDefault();const files=Array.from(e.dataTransfer.files);picker.files=e.dataTransfer.files;processFiles(files)});
 </script>
 </body>
 </html>

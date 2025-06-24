@@ -1,0 +1,1 @@
+```js\n// cache v2\nconst CACHE='sqborder-v2';\nself.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['./','./index.html','./manifest.json'])));self.skipWaiting();});\nself.addEventListener('fetch',e=>{e.respondWith(caches.match(e.request).then(r=>r
